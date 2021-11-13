@@ -12,9 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 
+app.get("/", (req, res) => {
+    res.send("Hello Sharif Shop!");
+});
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.diumk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-// console.log(uri);
+console.log(uri);
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -27,19 +31,19 @@ client.connect((err) => {
         .db("shipment")
         .collection("shipment_details");
 
-    // add car
+    // add product
     app.post("/addproduct", async (req, res) => {
         const result = await productsCollection.insertOne(req.body);
         res.send(result);
     });
 
-    // get car
+    // get product
     app.get("/product", async (req, res) => {
         const result = await productsCollection.find({}).toArray();
         res.send(result);
     });
 
-    // get car
+    // get product
     app.get("/product/:id", async (req, res) => {
         console.log(req.params.id);
         const result = await productsCollection
@@ -150,7 +154,6 @@ client.connect((err) => {
 
     app.put('/users/admin', async (req, res) => {
         const user = req.body;
-        console.log('put', user);
         const filter = { email: user.email };
         const updateDoc = { $set: { role: "admin" } };
         const result = await usersCollection.updateOne(filter, updateDoc)
@@ -159,6 +162,7 @@ client.connect((err) => {
 
     // client.close();
 });
+
 
 
 
