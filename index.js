@@ -160,6 +160,22 @@ client.connect((err) => {
         res.json(result);
     });
 
+    // update statuses
+
+    app.put("/updateStatus/:id", (req, res) => {
+        const id = req.params.id;
+        const updatedStatus = req.body.status;
+        const filter = { _id: ObjectId(id) };
+        console.log(updatedStatus);
+        shipmentCollection
+            .updateOne(filter, {
+                $set: { status: updatedStatus },
+            })
+            .then((result) => {
+                res.send(result);
+            });
+    });
+
     // client.close();
 });
 
